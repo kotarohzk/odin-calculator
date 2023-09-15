@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&family=Roboto+Slab:wght@300;400;500;700;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body,
+button {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+}
+
+.calculator {
+  width: 320px;
+  background-color: #000;
+  border-radius: 10px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin-bottom: 50px;
+}
+
+.display {
+  background-color: #522b29;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  text-align: right;
+  width: 90%;
+  border-radius: 10px;
+  margin: 10px auto;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-row + .btn-row {
+  margin-top: 10px;
+}
+
+.btn {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  width: 60px;
+  border: 1px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn[data-value="0"] {
+  width: 136px;
+}
+.btn[data-action="clear"] {
+  width: 212px;
+}
+
+.btn[data-action="plus"],
+.btn[data-action="minus"],
+.btn[data-action="times"],
+.btn[data-action="divide"],
+.btn[data-action="equal"] {
+  background-color: #e26d5a;
+  border: 1px solid #e26d5a;
+  color: #fff;
+}
+
+.btn[data-action="clear"] {
+  background-color: #f7ede2;
+  color: #000;
+}
+
+.btn[data-value],
+.btn[data-action="decimal"] {
+  background-color: #626c66;
+  color: #fff;
+}
