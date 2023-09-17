@@ -1,7 +1,7 @@
 let firstNumber;
 let secondNumber;
 let operator;
-let displayValue = 0;
+let displayValue = "0";
 
 const buttons = document.querySelector(".buttons");
 const display = document.querySelector(".display");
@@ -32,7 +32,7 @@ const operate = (num1, num2, operator) => {
 };
 
 const updateDisplayValue = (val) => {
-  if (displayValue === 0) {
+  if (displayValue === "0") {
     displayValue = val;
   } else {
     displayValue += val;
@@ -45,5 +45,11 @@ buttons.addEventListener("click", (e) => {
   if (e.target.dataset.value) {
     value = e.target.dataset.value;
     updateDisplayValue(value);
+  } else if (e.target.dataset.action === "clear") {
+    displayValue = "0";
+    firstNumber = null;
+    secondNumber = null;
+    operator = null;
+    updateDisplayValue("0");
   }
 });
