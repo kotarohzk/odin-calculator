@@ -1,6 +1,7 @@
-let firstNumber;
-let secondNumber;
-let operator;
+let firstNumber = null;
+let secondNumber = null;
+let operator = null;
+let previousKey = null;
 let displayValue = "0";
 
 const buttons = document.querySelector(".buttons");
@@ -26,7 +27,7 @@ const operate = (num1, num2, operator) => {
       result = multiply(parseFloat(num1), parseFloat(num2));
       break;
     case "divide":
-      result = multiple(parseFloat(num1), parseFloat(num2));
+      result = divide(parseFloat(num1), parseFloat(num2));
   }
   return result;
 };
@@ -52,24 +53,43 @@ const isOperator = (val) => {
   return false;
 };
 
+const resetAll = () => {
+  displayValue = "0";
+  firstNumber = null;
+  secondNumber = null;
+  operator = null;
+};
+
 buttons.addEventListener("click", (e) => {
   let value;
   if (e.target.dataset.value) {
     value = e.target.dataset.value;
     updateDisplayValue(value);
+    previousKey = "number";
   } else if (e.target.dataset.action === "clear") {
-    displayValue = "0";
-    firstNumber = null;
-    secondNumber = null;
-    operator = null;
+    resetAll();
     updateDisplayValue("0");
+    previousKey = "clear";
   } else if (e.target.dataset.action === "calculate") {
-    secondNumber = parseFloat(displayValue);
-    displayValue = "0";
-    updateDisplayValue(operate(firstNumber, secondNumber, operator));
+    if (firstNumber && operator) {
+      secondNumber = parseFloat(displayValue);
+      displayValue = "0";
+      updateDisplayValue(operate(firstNumber, secondNumber, operator));
+      resetAll();
+      previousKey = "calculate";
+    }
   } else if (isOperator(e.target.dataset.action)) {
-    firstNumber = parseFloat(displayValue);
-    operator = e.target.dataset.action;
+    if (operator !== null && previousKey !== "operator" && previousKey) {
+      secondNumber = displayValue;
+      displayValue = "0";
+      updateDisplayValue(operate(firstNumber, secondNumber, operator));
+      firstNumber = displayValue;
+      secondNumber = null;
+    } else {
+      firstNumber = parseFloat(displayValue);
+    }
     displayValue = "0";
+    operator = e.target.dataset.action;
+    previousKey = "operator";
   }
 });
