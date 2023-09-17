@@ -16,16 +16,16 @@ const divide = (a, b) => a / b;
 const operate = (num1, num2, operator) => {
   let result;
   switch (operator) {
-    case "+":
+    case "plus":
       result = add(parseFloat(num1), parseFloat(num2));
       break;
-    case "-":
+    case "minus":
       result = subtract(parseFloat(num1), parseFloat(num2));
       break;
-    case "*":
+    case "times":
       result = multiply(parseFloat(num1), parseFloat(num2));
       break;
-    case "/":
+    case "divide":
       result = multiple(parseFloat(num1), parseFloat(num2));
   }
   return result;
@@ -40,6 +40,18 @@ const updateDisplayValue = (val) => {
   display.textContent = displayValue;
 };
 
+const isOperator = (val) => {
+  if (
+    val === "plus" ||
+    val === "minus" ||
+    val === "times" ||
+    val === "divide"
+  ) {
+    return true;
+  }
+  return false;
+};
+
 buttons.addEventListener("click", (e) => {
   let value;
   if (e.target.dataset.value) {
@@ -51,5 +63,13 @@ buttons.addEventListener("click", (e) => {
     secondNumber = null;
     operator = null;
     updateDisplayValue("0");
+  } else if (e.target.dataset.action === "calculate") {
+    secondNumber = parseFloat(displayValue);
+    displayValue = "0";
+    updateDisplayValue(operate(firstNumber, secondNumber, operator));
+  } else if (isOperator(e.target.dataset.action)) {
+    firstNumber = parseFloat(displayValue);
+    operator = e.target.dataset.action;
+    displayValue = "0";
   }
 });

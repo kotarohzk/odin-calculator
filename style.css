@@ -76,7 +76,7 @@ button {
 .btn[data-action="minus"],
 .btn[data-action="times"],
 .btn[data-action="divide"],
-.btn[data-action="equal"] {
+.btn[data-action="calculate"] {
   background-color: #e26d5a;
   border: 1px solid #e26d5a;
   color: #fff;
