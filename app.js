@@ -45,7 +45,7 @@ const updateDisplayValue = (val) => {
     previousKey === "operator" ||
     previousKey === "calculate"
   ) {
-    displayValue = val;
+    displayValue = val.toString();
   } else if (displayValue.replace(".", "").length < 9) {
     displayValue += val;
   }
@@ -112,7 +112,7 @@ const handleDecimal = () => {
   if (displayValue.includes(".") || displayValue.length >= 9) {
     return;
   }
-  if (displayValue === "0") {
+  if (displayValue === "0" || previousKey === "calculate") {
     displayValue = "0.";
   } else {
     displayValue += ".";
