@@ -14,6 +14,12 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
+const roundOff = (num) => {
+  let numOfIntegers = Math.max(0, num.toString().indexOf("."));
+  let decimalPlace = Math.max(0, 9 - numOfIntegers);
+  return Math.round(num * 10 ** decimalPlace) / 10 ** decimalPlace;
+};
+
 const operate = (num1, num2, operator) => {
   console.log(`num1: ${num1} ${operator} num2: ${num2}`);
   let result;
@@ -30,7 +36,7 @@ const operate = (num1, num2, operator) => {
     case "divide":
       result = divide(parseFloat(num1), parseFloat(num2));
   }
-  return result;
+  return roundOff(result);
 };
 
 const updateDisplayValue = (val) => {
