@@ -40,7 +40,7 @@ const updateDisplayValue = (val) => {
     previousKey === "calculate"
   ) {
     displayValue = val;
-  } else {
+  } else if (displayValue.replace(".", "").length < 9) {
     displayValue += val;
   }
   display.textContent = displayValue;
@@ -93,13 +93,25 @@ const handleOperator = (opt) => {
     previousKey !== "calculate"
   ) {
     handleCalculation();
-    firstNumber = displayValue;
+    firstNumber = parseFloat(displayValue);
     secondNumber = null;
   } else {
     firstNumber = parseFloat(displayValue);
   }
   previousKey = "operator";
   operator = opt;
+};
+
+const handleDecimal = () => {
+  if (displayValue.includes(".") || displayValue.length >= 9) {
+    return;
+  }
+  if (displayValue === "0") {
+    displayValue = "0.";
+  } else {
+    displayValue += ".";
+  }
+  display.textContent = displayValue;
 };
 
 buttons.addEventListener("click", (e) => {
@@ -112,5 +124,7 @@ buttons.addEventListener("click", (e) => {
     handleCalculation();
   } else if (isOperator(e.target.dataset.action)) {
     handleOperator(e.target.dataset.action);
+  } else if (e.target.dataset.action === "decimal") {
+    handleDecimal();
   }
 });
