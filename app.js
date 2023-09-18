@@ -15,6 +15,7 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
 const operate = (num1, num2, operator) => {
+  console.log(`num1: ${num1} ${operator} num2: ${num2}`);
   let result;
   switch (operator) {
     case "plus":
@@ -33,7 +34,11 @@ const operate = (num1, num2, operator) => {
 };
 
 const updateDisplayValue = (val) => {
-  if (displayValue === "0") {
+  if (
+    displayValue === "0" ||
+    previousKey === "operator" ||
+    previousKey === "calculate"
+  ) {
     displayValue = val;
   } else {
     displayValue += val;
@@ -53,43 +58,59 @@ const isOperator = (val) => {
   return false;
 };
 
-const resetAll = () => {
+const handleClear = () => {
   displayValue = "0";
+  display.textContent = displayValue;
   firstNumber = null;
   secondNumber = null;
   operator = null;
+  previousKey = "clear";
+};
+
+const handleNumber = (val) => {
+  updateDisplayValue(val);
+  previousKey = "number";
+};
+
+const handleCalculation = () => {
+  if (
+    firstNumber &&
+    operator &&
+    previousKey !== "operator" &&
+    previousKey !== "calculate"
+  ) {
+    previousKey = "calculate";
+    secondNumber = parseFloat(displayValue);
+    updateDisplayValue(operate(firstNumber, secondNumber, operator));
+  }
+};
+
+const handleOperator = (opt) => {
+  if (
+    operator &&
+    previousKey &&
+    previousKey !== "operator" &&
+    previousKey !== "calculate"
+  ) {
+    handleCalculation();
+    firstNumber = displayValue;
+    secondNumber = null;
+  } else {
+    firstNumber = parseFloat(displayValue);
+  }
+  previousKey = "operator";
+  operator = opt;
 };
 
 buttons.addEventListener("click", (e) => {
   let value;
   if (e.target.dataset.value) {
-    value = e.target.dataset.value;
-    updateDisplayValue(value);
-    previousKey = "number";
+    handleNumber(e.target.dataset.value);
   } else if (e.target.dataset.action === "clear") {
-    resetAll();
-    updateDisplayValue("0");
-    previousKey = "clear";
+    handleClear();
   } else if (e.target.dataset.action === "calculate") {
-    if (firstNumber && operator) {
-      secondNumber = parseFloat(displayValue);
-      displayValue = "0";
-      updateDisplayValue(operate(firstNumber, secondNumber, operator));
-      resetAll();
-      previousKey = "calculate";
-    }
+    handleCalculation();
   } else if (isOperator(e.target.dataset.action)) {
-    if (operator !== null && previousKey !== "operator" && previousKey) {
-      secondNumber = displayValue;
-      displayValue = "0";
-      updateDisplayValue(operate(firstNumber, secondNumber, operator));
-      firstNumber = displayValue;
-      secondNumber = null;
-    } else {
-      firstNumber = parseFloat(displayValue);
-    }
-    displayValue = "0";
-    operator = e.target.dataset.action;
-    previousKey = "operator";
+    handleOperator(e.target.dataset.action);
   }
 });
