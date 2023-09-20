@@ -21,22 +21,21 @@ const roundOff = (num) => {
 };
 
 const operate = (num1, num2, operator) => {
-  console.log(`num1: ${num1} ${operator} num2: ${num2}`);
   let result;
   switch (operator) {
-    case "plus":
+    case "+":
       result = add(parseFloat(num1), parseFloat(num2));
       break;
-    case "minus":
+    case "-":
       result = subtract(parseFloat(num1), parseFloat(num2));
       break;
-    case "times":
+    case "*":
       result = multiply(parseFloat(num1), parseFloat(num2));
       break;
-    case "divide":
+    case "/":
       result = divide(parseFloat(num1), parseFloat(num2));
   }
-  return roundOff(result);
+  return result > 999999999 ? result.toExponential(0) : roundOff(result);
 };
 
 const updateDisplayValue = (val) => {
@@ -53,12 +52,7 @@ const updateDisplayValue = (val) => {
 };
 
 const isOperator = (val) => {
-  if (
-    val === "plus" ||
-    val === "minus" ||
-    val === "times" ||
-    val === "divide"
-  ) {
+  if (val === "/" || val === "*" || val === "+" || val === "-") {
     return true;
   }
   return false;
@@ -80,14 +74,20 @@ const handleNumber = (val) => {
 
 const handleCalculation = () => {
   if (
-    firstNumber &&
+    firstNumber !== null &&
     operator &&
     previousKey !== "operator" &&
-    previousKey !== "calculate"
+    previousKey !== "calculate" &&
+    previousKey !== "clear"
   ) {
     previousKey = "calculate";
     secondNumber = parseFloat(displayValue);
-    updateDisplayValue(operate(firstNumber, secondNumber, operator));
+    if (secondNumber === 0 && operator === "/") {
+      updateDisplayValue("I see you");
+    } else {
+      updateDisplayValue(operate(firstNumber, secondNumber, operator));
+    }
+    operator = null;
   }
 };
 
@@ -120,8 +120,19 @@ const handleDecimal = () => {
   display.textContent = displayValue;
 };
 
+const handleBackspace = (str) => {
+  if (previousKey !== "calculate" && previousKey !== "operator") {
+    if (str.length === 1) {
+      str = "0";
+    } else {
+      str = str.slice(0, -1);
+    }
+    displayValue = str;
+    display.textContent = displayValue;
+  }
+};
+
 buttons.addEventListener("click", (e) => {
-  let value;
   if (e.target.dataset.value) {
     handleNumber(e.target.dataset.value);
   } else if (e.target.dataset.action === "clear") {
@@ -131,6 +142,24 @@ buttons.addEventListener("click", (e) => {
   } else if (isOperator(e.target.dataset.action)) {
     handleOperator(e.target.dataset.action);
   } else if (e.target.dataset.action === "decimal") {
+    handleDecimal();
+  }
+  e.target.blur();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (isOperator(e.key)) {
+    e.preventDefault();
+    handleOperator(e.key);
+  } else if (!isNaN(e.key) && e.key !== " ") {
+    handleNumber(e.key);
+  } else if (e.key === "Enter") {
+    handleCalculation();
+  } else if (e.key === "Backspace" && e.shiftKey === true) {
+    handleClear();
+  } else if (e.key === "Backspace") {
+    handleBackspace(displayValue);
+  } else if (e.key === ".") {
     handleDecimal();
   }
 });

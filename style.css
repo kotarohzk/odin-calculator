@@ -72,10 +72,10 @@ button {
   width: 212px;
 }
 
-.btn[data-action="plus"],
-.btn[data-action="minus"],
-.btn[data-action="times"],
-.btn[data-action="divide"],
+.btn[data-action="+"],
+.btn[data-action="-"],
+.btn[data-action="*"],
+.btn[data-action="/"],
 .btn[data-action="calculate"] {
   background-color: #e26d5a;
   border: 1px solid #e26d5a;
@@ -91,4 +91,9 @@ button {
 .btn[data-action="decimal"] {
   background-color: #626c66;
   color: #fff;
+}
+
+button:focus,
+button:active {
+  border: 2px solid red;
 }
