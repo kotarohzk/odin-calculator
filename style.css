@@ -93,7 +93,7 @@ button {
   color: #fff;
 }
 
-button:focus,
+.active,
 button:active {
-  border: 2px solid red;
+  opacity: 0.5;
 }

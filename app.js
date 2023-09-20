@@ -132,6 +132,28 @@ const handleBackspace = (str) => {
   }
 };
 
+const toggleActiveState = (e) => {
+  if (isOperator(e.key)) {
+    document
+      .querySelector(`[data-action="${e.key}"]`)
+      .classList.toggle("active");
+  } else if (!isNaN(e.key) && e.key !== " ") {
+    document
+      .querySelector(`[data-value="${e.key}"]`)
+      .classList.toggle("active");
+  } else if (e.key === "Enter") {
+    document
+      .querySelector(`[data-action="calculate"]`)
+      .classList.toggle("active");
+  } else if (e.key === "Backspace" && e.shiftKey === true) {
+    document.querySelector(`[data-action="clear"]`).classList.toggle("active");
+  } else if (e.key === ".") {
+    document
+      .querySelector(`[data-action="decimal"]`)
+      .classList.toggle("active");
+  }
+};
+
 buttons.addEventListener("click", (e) => {
   if (e.target.dataset.value) {
     handleNumber(e.target.dataset.value);
@@ -148,6 +170,7 @@ buttons.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
+  console.log(e.key);
   if (isOperator(e.key)) {
     e.preventDefault();
     handleOperator(e.key);
@@ -162,4 +185,7 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === ".") {
     handleDecimal();
   }
+  toggleActiveState(e);
 });
+
+document.addEventListener("keyup", (e) => toggleActiveState(e));
