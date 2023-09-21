@@ -13,4 +13,4 @@ This is the **_final project_** of the foundation path of [The Odin Project](htt
 
 ## Demo
 
-You can try out the calculating by visiting the live demo [here](https://kotarohzk.github.io/odin-calculator/).
+You can try out the calculator by visiting the live demo [here](https://kotarohzk.github.io/odin-calculator/).
